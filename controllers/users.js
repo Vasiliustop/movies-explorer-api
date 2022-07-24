@@ -17,9 +17,7 @@ module.exports.getUserMe = (req, res, next) => {
       return res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequestError('Некорректный id пользователя'));
-      } else { next(err); }
+      next(err);
     });
 };
 
