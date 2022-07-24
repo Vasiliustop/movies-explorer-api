@@ -8,21 +8,21 @@ const { errors } = require('celebrate');
 const router = require('./routes/index');
 const handleErrors = require('./middlewares/handleErrors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { mongodbURL, PORT } = require('./utils/config');
 const limiter = require('./middlewares/limiter');
 
-const { PORT = 3000 } = process.env;
-mongoose.connect('mongodb://localhost:27017/moviesdb');
+mongoose.connect(mongodbURL);
 const app = express();
 
 app.use(cors({ credentials: true, origin: '*' }));
 
 app.use(bodyParser.json());
 
+app.use(requestLogger);
+
 app.use(limiter);
 
 app.use(helmet());
-
-app.use(requestLogger);
 
 app.use('/', router);
 
